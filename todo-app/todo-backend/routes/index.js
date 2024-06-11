@@ -10,7 +10,6 @@ router.get('/', async (req, res) => {
   visits++
 
   res.send({
-    ...configs,
     visits
   });
 });

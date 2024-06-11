@@ -1,10 +1,11 @@
 const express = require('express');
-const { Todo } = require('../mongo')
+const { Todo } = require('../mongo'); 
 const router = express.Router();
+const { isValidObjectId } = require('mongoose');
 
 /* GET todos listing. */
 router.get('/', async (_, res) => {
-  const todos = await Todo.find({})
+  const todos = await Todo.find({});
   res.send(todos);
 });
 
@@ -13,16 +14,22 @@ router.post('/', async (req, res) => {
   const todo = await Todo.create({
     text: req.body.text,
     done: false
-  })
+  });
   res.send(todo);
 });
 
 const singleRouter = express.Router();
 
 const findByIdMiddleware = async (req, res, next) => {
-  const { id } = req.params
+  const { id } = req.params;
+
+  if (!isValidObjectId(id)) {
+    console.error(`Invalid Todo ID: ${id}`);
+    return res.status(400).json({ error: 'Invalid Todo ID' }); 
+  }
+
   req.todo = await Todo.findById(id)
-  if (!req.todo) return res.sendStatus(404)
+  if (!req.todo) return next();
 
   next()
 }
@@ -35,15 +42,36 @@ singleRouter.delete('/', async (req, res) => {
 
 /* GET todo. */
 singleRouter.get('/', async (req, res) => {
-  res.sendStatus(405); // Implement this
+  await req.todo;
+  res.send(req.todo);
 });
 
 /* PUT todo. */
 singleRouter.put('/', async (req, res) => {
-  res.sendStatus(405); // Implement this
+  if (!req.todo) {
+    return res.status(404).json({ error: 'Todo not found' }); 
+  }
+  
+  const body = req.body;
+  const updates = {};
+
+  if (body.text !== undefined) {
+    updates.text = body.text;
+  }
+
+  if (body.done !== undefined) {
+    updates.done = body.done;
+  }
+
+  const updatedTodo = await Todo.findByIdAndUpdate(
+    req.todo._id,
+    { $set: updates },
+    { new: true }
+  );
+
+  res.send(updatedTodo);
 });
 
-router.use('/:id', findByIdMiddleware, singleRouter)
-
+router.use('/:id', findByIdMiddleware, singleRouter);
 
 module.exports = router;
