@@ -1,1 +1,4 @@
+.dockerignore
+.gitignore
 script.txt
+structure.py
