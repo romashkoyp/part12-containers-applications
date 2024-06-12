@@ -1,0 +1,113 @@
+Script started on 2024-06-12 11:06:38+03:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="178" LINES="27"]
+[?2004h]0;root@DESKTOP-ODUDS17: /mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backendroot@DESKTOP-ODUDS17:/mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backend# docker compose -f docker-compose.dev.yml restart mongo
+[?2004l[1A[1B[0G[?25l[+] Restarting 0/0
+ [33m⠋[0m Container todo-backend-mongo-1  Restarting                                                                                                                                [34m0.1s [0m
+[?25h[1A[1A[0G[?25l[+] Restarting 0/1
+ [33m⠙[0m Container todo-backend-mongo-1  Restarting                                                                                                                                [34m0.2s [0m
+[?25h[1A[1A[0G[?25l[+] Restarting 0/1
+ [33m⠹[0m Container todo-backend-mongo-1  Restarting                                                                                                                                [34m0.3s [0m
+[?25h[1A[1A[0G[?25l[+] Restarting 0/1
+ [33m⠸[0m Container todo-backend-mongo-1  Restarting                                                                                                                                [34m0.4s [0m
+[?25h[1A[1A[0G[?25l[34m[+] Restarting 1/1[0m
+ [32m✔[0m Container todo-backend-mongo-1  [32mStarted[0m                                                                                                                                   [34m0.4s [0m
+[?25h[?2004h]0;root@DESKTOP-ODUDS17: /mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backendroot@DESKTOP-ODUDS17:/mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backend# docker exec -it todo-backend-mongo-1 bash
+[?2004l[?2004hroot@89fc1da7e028:/# mongosh -u root -p example
+[?2004l]0;mongosh mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000Current Mongosh Log ID:	66695726aaef457c64a26a12
+Connecting to:		[1m[32mmongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.6[0m
+Using MongoDB:		7.0.11
+[1m[33mUsing Mongosh[0m:		2.2.6
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+[1G[0J [1G[1m[33m------[0m
+   [1m[33mThe server generated these startup warnings when booting[0m
+   2024-06-12T08:06:49.870+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2024-06-12T08:06:50.981+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never' in this binary version
+   2024-06-12T08:06:50.981+00:00: vm.max_map_count is too low
+[1m[33m------[0m
+
+[1G[0Jtest> [7Gshow dbs
+[1madmin[0m         100.00 KiB
+[1mconfig[0m        108.00 KiB
+[1mlocal[0m          72.00 KiB
+[1mthe_database[0m   72.00 KiB
+[1G[0Jtest> [7Guse the_database
+switched to db the_database
+[1G[0Jthe_database> [15Gshow collections
+[1mtodos[0m
+[1G[0Jthe_database> [15Gdb.todos.find({})
+[
+  {
+    _id: ObjectId([32m'66687337df814f1650ff765a'[39m),
+    text: [32m'sfghnfghn'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'66687566f0c91123b8c2dc3d'[39m),
+    text: [32m'test3'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'666876dd1d5bee405c437aa0'[39m),
+    text: [32m'tes43'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'66687a036880651c6072a864'[39m),
+    text: [32m'tes43'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'66687ab10486722ac450dfc2'[39m),
+    text: [32m'tes43'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6669548e7380351061a26a13'[39m),
+    text: [32m'test!'[39m,
+    done: [33mtrue[39m
+  }
+]
+[1G[0Jthe_database> [15Gtr[36mtry[39m {
+  db.todos.insertOne( {text: "Increase the number of tools in my tool belt", done: false } );
+} catch (e) {
+   print (e);
+}[1G[0J... [5G   db.todos.insertOne( {text[33mtext[39m: [32m"[39m[32mI[39m[32mn[39m[32mc[39m[32mr[39m[32me[39m[32ma[39m[32ms[39m[32me[39m [32mt[39m[32mh[39m[32me[39m [32mn[39m[32mu[39m[32mm[39m[32mb[39m[32me[39m[32mr[39m [32mo[39m[32mf[39m [32mt[39m[32mo[39m[32mo[39m[32ml[39m[32ms[39m [32mi[39m[32mn[39m [32mm[39m[32my[39m [32mt[39m[32mo[39m[32mo[39m[32ml[39m [32mb[39m[32me[39m[32ml[39m[32mt[39m[32m"[39m, d[36mdo[39mdone: fals[33mfalse[39m } );
+[1G[0J... [5G} catc[36mcatch[39m (e) {
+[1G[0J... [5G   print (e);
+[1G[0J... [5G}
+{
+  acknowledged: [33mtrue[39m,
+  insertedId: ObjectId([32m'66695756aaef457c64a26a13'[39m)
+}
+[1G[0Jthe_database> [15Gdb.todos.find({_id[33m_id[39m: Objec[36mObject[39mObjectId([32m'[39m[32m_[39m[32m_[39m[32m_[39m[32m_[39m[32m'[39m)})[1D[1G[0Jthe_database> db.todos.find[44m([49m{[33m_id[39m: ObjectId([32m'____'[39m)})[52G[1D[1G[0Jthe_database> db.todos.find([44m{[49m[33m_id[39m: ObjectId([32m'____'[39m)})[51G[1D[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId[44m([49m[32m'____'[39m)})[50G[1D[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m____'[39m)})[49G[1D[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([32m'____'[39m)})[48G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([32m'___'[39m)})[47G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([32m'__'[39m)})[46G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([32m'_'[39m)})[45G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m'[39m)})[45G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m6'[39m)})[46G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66'[39m)})[47G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m666'[39m)})[48G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m6669'[39m)})[49G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695'[39m)})[50G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m666957'[39m)})[51G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m6669575'[39m)})[52G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756'[39m)})[53G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756a'[39m)})[54G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aa'[39m)})[55G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aae'[39m)})[56G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef'[39m)})[57G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef4'[39m)})[58G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef45'[39m)})[59G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457'[39m)})[60G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457c'[39m)})[61G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457c6'[39m)})[62G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457c64'[39m)})[63G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457c64a'[39m)})[64G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457c64a2'[39m)})[65G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457c64a26'[39m)})[66G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457c64a26a'[39m)})[67G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457c64a26a1'[39m)})[68G[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([44m[32m'[49m66695756aaef457c64a26a13'[39m)})[69G[1C[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId[44m([49m[32m'66695756aaef457c64a26a13'[39m)})[70G[1C[1G[0Jthe_database> db.todos.find([44m{[49m[33m_id[39m: ObjectId([32m'66695756aaef457c64a26a13'[39m)})[71G[1C[1G[0Jthe_database> db.todos.find[44m([49m{[33m_id[39m: ObjectId([32m'66695756aaef457c64a26a13'[39m)})[72G[1C[1G[0Jthe_database> db.todos.find({[33m_id[39m: ObjectId([32m'66695756aaef457c64a26a13'[39m)})[73G
+[
+  {
+    _id: ObjectId([32m'66695756aaef457c64a26a13'[39m),
+    text: [32m'Increase the number of tools in my tool belt'[39m,
+    done: [33mfalse[39m
+  }
+]
+[1G[0Jthe_database> [15Gexit
+[?2004hroot@89fc1da7e028:/# exit
+[?2004lexit
+[1m
+What's next?
+[0m  Try Docker Debug for seamless, persistent debugging tools in any container or image → [36mdocker debug todo-backend-mongo-1[0m
+  Learn more at https://docs.docker.com/go/debug-cli/
+[?2004h]0;root@DESKTOP-ODUDS17: /mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backendroot@DESKTOP-ODUDS17:/mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backend# docker ps
+[?2004lCONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS         PORTS                     NAMES
+89fc1da7e028   mongo     "docker-entrypoint.s…"   17 hours ago   Up 2 minutes   0.0.0.0:3456->27017/tcp   todo-backend-mongo-1
+[?2004h]0;root@DESKTOP-ODUDS17: /mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backendroot@DESKTOP-ODUDS17:/mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backend# docker stop todo-backend [K-maondo-[K[K[K[K[K[Kongo-1
+[?2004ltodo-backend-mongo-1
+[?2004h]0;root@DESKTOP-ODUDS17: /mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backendroot@DESKTOP-ODUDS17:/mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backend# docker ps
+[?2004lCONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[?2004h]0;root@DESKTOP-ODUDS17: /mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backendroot@DESKTOP-ODUDS17:/mnt/c/Users/romas/Documents/Code/part12/part12-containers-applications/todo-app/todo-backend# exit
+[?2004lexit
+
+Script done on 2024-06-12 11:09:33+03:00 [COMMAND_EXIT_CODE="0"]
