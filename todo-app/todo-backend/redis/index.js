@@ -24,9 +24,9 @@ if (!REDIS_URL) {
   client.on('error', (err) => {
     console.error('Redis connection error:', err);
   });
-    
+  
+  setAsync = promisify(client.set).bind(client)   
   getAsync = promisify(client.get).bind(client)
-  setAsync = promisify(client.set).bind(client)    
 }
 
 module.exports = {

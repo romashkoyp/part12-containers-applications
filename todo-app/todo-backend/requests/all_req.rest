@@ -9,7 +9,7 @@ POST http://localhost:3000/todos
 Content-Type: application/json
 
 {
-    "text": "tes43",
+    "text": "test3",
     "done": true
 }
 
@@ -18,7 +18,7 @@ GET http://localhost:3000/todos/6668628803eead6248a26a13
 
 
 ###
-DELETE http://localhost:3000/todos/6668628803eead6248a26a1fghnfghng
+DELETE http://localhost:3000/todos/66687a036880651c6072a864
 
 ###
 PUT http://localhost:3000/todos/66687337df814f1650ff765
