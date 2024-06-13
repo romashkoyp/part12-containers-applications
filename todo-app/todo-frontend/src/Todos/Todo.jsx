@@ -2,18 +2,32 @@ import { useState, useEffect } from 'react'
 import axios from '../util/apiClient'
 import { useParams } from 'react-router-dom'
 
-const SingleTodo = () => {
-  const [singleTodo, setSingleTodo] = useState([])
-  const { id } = useParams()
+const useTodo = (id) => {
+  const [singleTodo, setSingleTodo] = useState()
 
   useEffect(() => {
     const getTodoById = async () => {
-      const { data } = await axios.get(`/todos/${id}`)
-      setSingleTodo(data)
+      try {
+        const { data } = await axios.get(`/todos/${id}`)
+        setSingleTodo(data)
+      } catch (error) {
+        setSingleTodo()
+      }
     }
-
     getTodoById()
   }, [id])
+  return singleTodo
+}
+
+const SingleTodo = () => {
+  const { id } = useParams()
+  // console.log(id)
+  const singleTodo = useTodo(id)
+  console.log(singleTodo)
+
+  if (!singleTodo) {
+    return <p>There is no todo with this ID</p>;
+  }
 
   return (
     <> 
