@@ -10,6 +10,8 @@ RUN npm run build
 
 RUN npm install -g serve
 
+RUN npm test
+
 CMD ["serve", "dist"]
 
 ENV VITE_BACKEND_URL=http://localhost:3000/
