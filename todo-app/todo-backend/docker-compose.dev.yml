@@ -1,4 +1,26 @@
 services:
+  server:
+    image: todo_app_backend
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    environment:
+      - REDIS_URL=redis://redis:6379 
+      #instead of redis://localhost:6379, use name of image + port after ": ..."
+
+      - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database 
+      #instead of mongodb://the_username:the_password@localhost:3456/the_database
+
+      - CHOKIDAR_USEPOLLING=true #essential thing in my keys to be hot updated in container during developing
+    container_name: todo_app_backend_dev
+  #debug-helper:
+  #  image: busybox
+
   mongo:
     image: mongo
     ports:
@@ -17,6 +39,7 @@ services:
     command: ['redis-server', '--appendonly', 'yes']
     volumes:
       - ./redis_data:/data
+
 volumes:
   mongo_data:
   redis_data:
