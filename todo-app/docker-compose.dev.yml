@@ -1,4 +1,17 @@
 services:
+  app:
+    image: todo_app_dev
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./todo-frontend:/usr/src/app/
+    #ports:
+    #  - 5173:5173
+    container_name: todo_app_front_dev
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
   server:
     image: todo_app_backend
     build:
@@ -6,8 +19,8 @@ services:
       dockerfile: dev.Dockerfile
     volumes:
       - ./todo-backend:/usr/src/app
-    ports:
-      - 3000:3000
+    #ports:
+    #  - 3000:3000
     environment:
       - REDIS_URL=redis://redis:6379 
       #instead of redis://localhost:6379, use name of image + port after ": ..."
@@ -47,22 +60,9 @@ services:
       - 8080:80
     container_name: reverse-proxy
     depends_on:
-      #- app # wait for the frontend container to be started
+      - app # wait for the frontend container to be started
       - server
 
 volumes:
   mongo_data:
   redis_data:
-
-  #app:
-  #  image: todo_app_dev
-  #  build:
-  #    context: .
-  #    dockerfile: dev.Dockerfile
-  #  volumes:
-  #    - ./todo-frontend:/usr/src/app/
-  #  ports:
-  #    - 5173:5173
-  #  container_name: todo_app_front_dev
-  #  environment:
-  #    - CHOKIDAR_USEPOLLING=true
