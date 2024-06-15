@@ -1,37 +1,12 @@
 services:
-  app:
-    image: todo_app_dev
+  client:
+    image: todo_frontend_prod
     build:
       context: ./todo-frontend
-      dockerfile: dev.Dockerfile
-    volumes:
-      - ./todo-frontend:/usr/src/app/
+      dockerfile: Dockerfile
     #ports:
     #  - 5173:5173
-    container_name: todo_app_front_dev
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-
-  server:
-    image: todo_app_backend
-    build:
-      context: ./todo-backend
-      dockerfile: dev.Dockerfile
-    volumes:
-      - ./todo-backend:/usr/src/app
-    #ports:
-    #  - 3000:3000
-    environment:
-      - REDIS_URL=redis://redis:6379 
-      #instead of redis://localhost:6379, use name of image + port after ": ..."
-
-      - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database 
-      #instead of mongodb://the_username:the_password@localhost:3456/the_database
-
-      - CHOKIDAR_USEPOLLING=true #essential thing in my keys to be hot updated in container during developing
-    container_name: todo_app_backend_dev
-  #debug-helper:
-  #  image: busybox
+    container_name: client_prod
 
   mongo:
     image: mongo
@@ -44,6 +19,7 @@ services:
     volumes:
       - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       - mongo_data:/data/db
+
   redis:
     image: redis
     ports:
@@ -51,6 +27,25 @@ services:
     command: ['redis-server', '--appendonly', 'yes']
     volumes:
       - ./todo-backend/redis_data:/data
+
+  server:
+    image: todo_backend_prod
+    build:
+      context: ./todo-backend
+      dockerfile: Dockerfile
+    ports:
+     - 3000:3000
+    environment:
+      - REDIS_URL=redis://redis:6379 
+      #instead of redis://localhost:6379, use name of image + port after ": ..."
+
+      - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database 
+      #instead of mongodb://the_username:the_password@localhost:3456/the_database
+
+    container_name: server_prod
+    depends_on:
+      - mongo
+      - redis
 
   nginx:
     image: nginx:1.20.1
@@ -60,9 +55,7 @@ services:
       - 8080:80
     container_name: reverse-proxy
     depends_on:
-      - app # wait for the frontend container to be started
+      - client
       - server
-
 volumes:
   mongo_data:
-  redis_data:

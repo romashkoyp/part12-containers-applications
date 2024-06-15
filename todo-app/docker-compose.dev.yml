@@ -12,6 +12,26 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
 
+  mongo:
+    image: mongo
+    ports:
+     - 3456:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: the_database
+    volumes:
+      - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - mongo_data:/data/db
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - ./todo-backend/redis_data:/data
+
   server:
     image: todo_backend_dev
     build:
@@ -30,27 +50,9 @@ services:
 
       - CHOKIDAR_USEPOLLING=true #essential thing in my keys to be hot updated in container during developing
     container_name: server_dev
-  #debug-helper:
-  #  image: busybox
-
-  mongo:
-    image: mongo
-    ports:
-     - 3456:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: the_database
-    volumes:
-      - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      - mongo_data:/data/db
-  redis:
-    image: redis
-    ports:
-      - 6379:6379
-    command: ['redis-server', '--appendonly', 'yes']
-    volumes:
-      - ./todo-backend/redis_data:/data
+    depends_on:
+      - mongo
+      - redis
 
   nginx:
     image: nginx:1.20.1
