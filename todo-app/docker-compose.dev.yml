@@ -1,21 +1,21 @@
 services:
-  app:
-    image: todo_app_dev
+  client:
+    image: todo_frontend_dev
     build:
-      context: .
+      context: ./todo-frontend
       dockerfile: dev.Dockerfile
     volumes:
       - ./todo-frontend:/usr/src/app/
     #ports:
     #  - 5173:5173
-    container_name: todo_app_front_dev
+    container_name: client_dev
     environment:
       - CHOKIDAR_USEPOLLING=true
 
   server:
-    image: todo_app_backend
+    image: todo_backend_dev
     build:
-      context: .
+      context: ./todo-backend
       dockerfile: dev.Dockerfile
     volumes:
       - ./todo-backend:/usr/src/app
@@ -29,7 +29,7 @@ services:
       #instead of mongodb://the_username:the_password@localhost:3456/the_database
 
       - CHOKIDAR_USEPOLLING=true #essential thing in my keys to be hot updated in container during developing
-    container_name: todo_app_backend_dev
+    container_name: server_dev
   #debug-helper:
   #  image: busybox
 
@@ -60,7 +60,7 @@ services:
       - 8080:80
     container_name: reverse-proxy
     depends_on:
-      - app # wait for the frontend container to be started
+      - client
       - server
 
 volumes:
