@@ -1,0 +1,49 @@
+services:
+  client:
+    image: frontend_prod
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5001:3000
+    container_name: client_prod
+
+  mongo:
+    image: mongo
+    ports:
+     - 3456:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: phoneBook
+    volumes:
+      - ./backend/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - mongo_data:/data/db
+
+  server:
+    image: backend_prod
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+     - 3001:3001
+    environment:
+      - MONGO_URL=mongodb://romashkoyp:CHY5BxIJ5OoQRT3Q@mongo:27017/phoneBook 
+
+    container_name: server_prod
+    depends_on:
+      - mongo
+
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - client
+      - server
+
+volumes:
+  mongo_data:
