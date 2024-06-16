@@ -1,0 +1,59 @@
+services:
+  #client:
+  #  image: todo_frontend_dev
+  #  build:
+  #    context: ./todo-frontend
+  #    dockerfile: dev.Dockerfile
+  #  volumes:
+  #    - ./todo-frontend:/usr/src/app/
+  #  #ports:
+  #  #  - 5173:5173
+  #  container_name: client_dev
+  #  environment:
+  #    - CHOKIDAR_USEPOLLING=true
+
+  mongo:
+    image: mongo
+    ports:
+     - 3456:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: phoneBook
+    volumes:
+      #- ./backend/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - mongo_data:/data/db
+
+  server:
+    image: backend_dev
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./backend:/usr/src/app
+    ports:
+      - 3001:3001
+    environment:
+      - MONGO_URL=mongodb://romashkoyp:CHY5BxIJ5OoQRT3Q@mongo:27017/phoneBook 
+      #instead of mongodb://the_username:the_password@localhost:3456/the_database
+
+      - CHOKIDAR_USEPOLLING=true
+    container_name: server_dev
+    depends_on:
+      - mongo
+      #- redis
+
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      #- client
+      - server
+
+volumes:
+  mongo_data:
+  #redis_data:
